@@ -1,9 +1,7 @@
-import { PrismaClient, Ticket } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import dotenv from "dotenv";
 import { CreateOrderProps } from "./booking.controller";
-import cron from "node-cron";
-import { log } from "util";
 dotenv.config();
 const prisma = new PrismaClient();
 

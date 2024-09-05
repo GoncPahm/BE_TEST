@@ -1,7 +1,6 @@
-import { PrismaClient, Ticket } from "@prisma/client";
-import { application, Request, Response } from "express";
+import { PrismaClient } from "@prisma/client";
+import { Request, Response } from "express";
 import dotenv from "dotenv";
-import cron from "node-cron";
 import { scheduleOrderCancellation } from "../cron/cronJob";
 dotenv.config();
 const prisma = new PrismaClient();
