@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  ticketId String @id @default(cuid())
+  name String
+  price Int
+  remainingQuantity Int @map("remaining_quantity")
+  status StatusTicket @default(AVAILABLE)
+  updateAt DateTime @updatedAt @map("update_at") @default(now())
+
+  orders Order[]
+}
+
+model User {
+  userId String @id @default(cuid())
+  email String
+  name String
+  phone String
+  orders Order[]
+}
+
+model Order {
+  orderId String @id @default(cuid())
+  userId String
+  ticketId String
+  quantity Int
+  captureId String
+  total Int
+  orderedAt DateTime @default(now()) @map("ordered_at")
+  updateAt DateTime @updatedAt @map("update_at")
+  status StatusOrder @default(PENDING)
+  
+  user User @relation(fields: [userId], references: [userId])
+  ticket Ticket @relation(fields: [ticketId], references: [ticketId])
+}
+
+enum StatusTicket {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum StatusOrder {
+  PENDING
+  SUCCESS
+  CANCEL
+}
